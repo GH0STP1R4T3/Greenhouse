@@ -22,6 +22,7 @@ namespace Greenhouse
         private int htimeLeft = 0;
         private bool pause = true;
         private bool stopAutomation = false;
+        string additionalInfoForInfoTextBox = "";
 
         private readonly Admin adminReference;
         private readonly Nature natureReference;
@@ -62,6 +63,7 @@ namespace Greenhouse
                     firstTextLine += "          ----- PAUSED -----";
                 if (stopAutomation)
                     firstTextLine += "          ----- AUTOMATION SYSTEM STOPPED -----";
+                firstTextLine += additionalInfoForInfoTextBox;
                 adminReference.SetTimeText(String.Join(" ", firstTextLine,
                             "\nTodays Plan:",
                             "\nTemperature:", temperaturePlan[dayNumber],
@@ -88,18 +90,18 @@ namespace Greenhouse
                             adminReference.sensors[i].SetState(phPlan[dayNumber]);
                 }
 
-                if (!pause) 
+                if (!pause && dayNumber < temperaturePlan.Count)
                 {
                     htimeLeft += 1;
-                    
+
                     if (!stopAutomation)
                     {
                         float currentTemperature = 0;
                         float currentHumidity = 0;
                         float currentPh = 0;
 
-                        for (int i = 0; i < adminReference.sensors.Count; i++) 
-                        { 
+                        for (int i = 0; i < adminReference.sensors.Count; i++)
+                        {
                             if (adminReference.sensors[i].GetName() == "TemperatureSensor")
                                 currentTemperature = adminReference.sensors[i].GetState();
                             else if (adminReference.sensors[i].GetName() == "HumiditySensor")
@@ -118,7 +120,7 @@ namespace Greenhouse
                                     adminReference.activeDevices[i].SetState(false);
                             }
                         }
-                        else 
+                        else
                         {
                             for (int i = 0; i < adminReference.activeDevices.Count; i++)
                             {
@@ -150,7 +152,7 @@ namespace Greenhouse
                             }
                         }
 
-                        if (currentPh < phPlan[dayNumber]) 
+                        if (currentPh < phPlan[dayNumber])
                         {
                             for (int i = 0; i < adminReference.activeDevices.Count; i++)
                                 if (adminReference.activeDevices[i].GetName() == "FertilizerDispenser")
@@ -180,6 +182,10 @@ namespace Greenhouse
 
                     if (htimeLeft % 4 == 0)
                         natureReference.GenerateDeviations();
+                }
+                else if (dayNumber >= temperaturePlan.Count) 
+                {
+                    additionalInfoForInfoTextBox = "--- PLAN IS FINISHED --- SYSTEM STOPS EXECUTION ---";
                 }
             }
         }
