@@ -61,15 +61,15 @@ namespace Greenhouse
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (e.Source is Border source)
+                if (e.Source is Border borderSource)
                 {
                     System.Windows.Point position = e.GetPosition(MainCanvas);
                     double pX = position.X;
                     double pY = position.Y;
-                    if ((pX <= MainCanvas.ActualWidth - source.Width) && (pY >= 0 + source.Height / 2))
+                    if ((pX <= MainCanvas.ActualWidth - borderSource.Width) && (pY >= 0 + borderSource.Height / 2))
                     {
-                        source.SetValue(Canvas.LeftProperty, pX - source.Width / 2);
-                        source.SetValue(Canvas.TopProperty, pY - source.Height / 2);
+                        borderSource.SetValue(Canvas.LeftProperty, pX - borderSource.Width / 2);
+                        borderSource.SetValue(Canvas.TopProperty, pY - borderSource.Height / 2);
                     }
                 }
             }

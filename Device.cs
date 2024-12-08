@@ -44,7 +44,8 @@ namespace Greenhouse
             {
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment = System.Windows.VerticalAlignment.Center,
-                Text = name
+                Text = name,
+                IsHitTestVisible = false,
             };
 
             this.Child = textblock;
