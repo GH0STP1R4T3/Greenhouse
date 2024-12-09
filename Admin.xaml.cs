@@ -152,18 +152,34 @@ namespace Greenhouse
 
         private void AddTemperatureSensor(object sender, RoutedEventArgs e){
             Sensor temp = new Sensor(MainCanvas, this, "aquamarine", "TemperatureSensor");
+            temp.SetState(automatedSystemReference.GetCurrentParameter("temperature"));
             sensors.Add(temp);
         }
 
         private void AddHumiditySensor(object sender, RoutedEventArgs e)
         {
             Sensor temp = new Sensor(MainCanvas, this, "blue", "HumiditySensor");
+            temp.SetState(automatedSystemReference.GetCurrentParameter("humidity"));
             sensors.Add(temp);
         }
 
         private void AddPhSensor(object sender, RoutedEventArgs e)
         {
             Sensor temp = new Sensor(MainCanvas, this, "red", "PhSensor");
+            bool sensorFound = false;
+            for (int i = 0; i < sensors.Count; i++)
+            {
+                if (sensors[i].GetName() == "PhSensor")
+                {
+                    sensorFound = true;
+                    temp.SetState(sensors[i].GetState());
+                    break;
+                }
+            }
+
+            if (!sensorFound)
+                temp.SetState(automatedSystemReference.GetCurrentParameter("ph"));
+            
             sensors.Add(temp);
         }
 

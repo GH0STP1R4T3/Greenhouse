@@ -22,6 +22,8 @@ namespace Greenhouse
             this.state = state;
             if (this.name == "PhSensor" && state < 0)
                 this.state = 0;
+            else if (this.name == "PhSensor" && state > 14)
+                this.state = 14;
             else if (this.name == "HumiditySensor" && state < 0)
                 this.state = 0;
             else if (this.name == "HumiditySensor" && state > 100)

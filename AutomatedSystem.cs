@@ -79,7 +79,7 @@ namespace Greenhouse
                 System.Threading.Thread.Sleep(2000);
                 int dayNumber = htimeLeft / 24;
 
-                if (htimeLeft == 0) 
+                if (htimeLeft == 0)
                 {
                     for (int i = 0; i < adminReference.sensors.Count; i++)
                         if (adminReference.sensors[i].GetName() == "TemperatureSensor")
@@ -89,6 +89,7 @@ namespace Greenhouse
                         else if (adminReference.sensors[i].GetName() == "PhSensor")
                             adminReference.sensors[i].SetState(phPlan[dayNumber]);
                 }
+               
 
                 if (!pause && dayNumber < temperaturePlan.Count)
                 {
@@ -202,6 +203,22 @@ namespace Greenhouse
 
         public string GetPlanPath() {
             return planPath;
+        }
+
+        public int GetCurrentParameter(String parameter) 
+        {
+            int dayNumber = htimeLeft / 24;
+            switch (parameter) 
+            {
+                case "temperature":
+                    return temperaturePlan[dayNumber];
+                case "humidity":
+                    return humidityPlan[dayNumber];
+                case "ph":
+                    return phPlan[dayNumber];
+                default:
+                    return temperaturePlan[dayNumber];
+            }
         }
 
         public int GetHTimeLeft() {
